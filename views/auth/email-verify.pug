@@ -1,0 +1,18 @@
+extends ../layouts/auth.pug
+
+block auth
+  .wrapper-page
+    .text-center
+        a.logo-lg(href='/')
+            i.mdi.mdi-shield
+            span D.O.E
+    .card-box.m-t-20
+        .text-center
+            h5.text-uppercase.font-bold.m-b-0=title
+        .text-center
+            img.thumb-lg.m-t-20.center-block(src='../../backend-assets/assets/images/mail_confirm.png', alt='img')
+            p.text-muted.font-13.m-t-20
+                | An email has been sent to 
+                b=email
+            p.text-muted.font-13.m-t-20
+                b=message

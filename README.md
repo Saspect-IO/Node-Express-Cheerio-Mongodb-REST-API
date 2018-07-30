@@ -1,28 +1,33 @@
-# NotiVize React Redux Heroku Restful API
+# NotiVize-Node-REST-API
 
-Runs on Heroku free Dino so it sleeps after 30 mins of no usage, hence you may need to reload page after Dino wakes up.
+Revamp and code Optimization of the [NotiVize-React-Redux-Dashboard_with_Restful-API](https://github.com/Saspect-IO/NotiVize-React-Redux-Dashboard_with_Restful-API).
+This splits up the RESTful API with a dashboard from the frontend which will be PWA to read the articles.
+
+Existing prototype can be found at link below will be updated soon.
 Node.js Express React Redux  app [NotiVize Dashboard](https://notivize.herokuapp.com/dashboard).
-Utilizing Ant design for react css framework
 
 ## Usage
 
 Clone or download,
 npm install
-nodemon index.babel.js
-webpack -w
+nodemon server.js
 
 ## Recommendations
 
-1) You will need to get an API key from the news api.
+1) You will need to get an API key from the news api for international news.
 
-2) You will need to sign up with mlab or another cloud based mongodb to save data to and get from database.
+2) You will need to sign up with mlab or another cloud based mongodb service to save data to and get from database.
 
 ## Future Updates
 
-1) adding another webscraper utility for local Jamaican News
+1) Completing local news web scraper for other news outlets
 
-2) Developing frontend views with handlebars, react and react bootstrap
+2) adding another web scraper utility for International New
 
-3) login and registration view
+3) Developing backend dashboard views with pug and bootstrap
 
-4) authenticate with passport.js
+4) login and registration system
+
+5) authenticate with passport.js
+
+6)authenticating API end point with JWT-passport

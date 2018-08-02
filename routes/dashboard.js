@@ -4,12 +4,24 @@
 const express = require('express');
 const router = express.Router();
 const articlesCtrl = require('../controllers/ArticlesController');
+const authCtrl = require('../controllers/AuthenticationController');
+const pagesCtrl = require('../controllers/PagesController');
 //
 // ..........................................................................
-// Dash Routes for to Get Initial Page
+// Login and Authentication
 // ..........................................................................
 //
-router.get('/dashboard/scrape-local', articlesCtrl.scrapeLocalNewsArticles);
+//
+// ..........................................................................
+// Dashboard routes
+// ..........................................................................
+//
+router.get('/', pagesCtrl.getDashboard)
+
+router.get('/scrape-local', articlesCtrl.scrapeLocalNewsArticles)
+router.get('/scrape-int', articlesCtrl.scrapeIntNewsArticles)
+
+
 
 
 module.exports = router;

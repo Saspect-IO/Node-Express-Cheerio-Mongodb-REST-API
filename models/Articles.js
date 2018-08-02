@@ -10,8 +10,8 @@ let ArticlesSchema = new Schema({
 		index: true
 	},
 	urlTitle:{
-    	type:String,
-		required:true
+    type:String,
+		required:false
 	},
 	subject:{
 		type:String,
@@ -19,11 +19,11 @@ let ArticlesSchema = new Schema({
 	},
 	details:{
 			type:String,
-			required:true
+			required:false
 	},
 	author:{
 		type:String,
-		required:true,
+		required:false,
 	},
 	source:{
     type:String,
@@ -49,7 +49,7 @@ let ArticlesSchema = new Schema({
 	},
 	urlToImage:{
     type:String,
-		required:true
+		required:false
 	},
 	url:{
     type:String,
@@ -69,6 +69,11 @@ let ArticlesSchema = new Schema({
 		type:String,
 		required:false,
 		default:"anonymous"
+	},
+	scraped:{
+		type:Boolean,
+		required:false,
+		default:false
 	},
 	featured:{
 		type:Boolean,

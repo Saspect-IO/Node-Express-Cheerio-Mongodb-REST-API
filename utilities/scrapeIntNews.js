@@ -2,6 +2,7 @@ const axios = require('axios');
 const request = require('request');
 const cheerio = require('cheerio');
 const moment = require('moment');
+const Article = require('../models/Articles');
 const config = require('../config/database');
 
 
@@ -31,7 +32,7 @@ const ENTERTAINMENT_WEEKLY = 'https://newsapi.org/v1/articles?source=entertainme
 const NEW_SCIENTIST = 'https://newsapi.org/v1/articles?source=new-scientist&sortBy=top&apiKey=' + apiKey;
 const NATIONAL_GEOGRAPHY = 'https://newsapi.org/v1/articles?source=national-geographic&sortBy=top&apiKey=' + apiKey;
 
-const listofUrls_Categories = {
+const sources = {
     TNW: ["trending", TNW, "TNW", '.post-body'],
     MASHABLE: ["trending", MASHABLE, "MASHABLE", '.article-content'],
     CNN: ["news", CNN, "CNN", '.zn-body__paragraph'],
@@ -65,19 +66,29 @@ let scrapeArticleUrl = (articleSource, articleCategory, articleTitle, articleAut
 
             let addedSpace = data.find("p").text()
             let articleDetails = addedSpace.replace(/(.*?\.){3}/g, '$& \n\n');
+            //console.log(articleTitle);
+            Article.findOne({title:articleTitle}, function(err, exist) {
 
-            let eachArticle = {
-                source: articleSource,
-                category: articleCategory,
-                title: articleTitle,
-                author: articleAuthor,
-                publishedAt: articleDate,
-                timeStamp: articleTimeStamp,
-                urlToImage: articleUrlToImage,
-                description: articleDetails,
-                url: artilceUrl
-            }
-            return (eachArticlePushed = eachArticle)
+              if (exist===null && typeof exist==='undefined') {
+                let article = new Article();
+                article.title=articleTitle;
+                article.urlTitle = (articleTitle).replace(/[\. ,:-]+/g, "-");
+                article.articleAuthor=articleAuthor;
+                article.source=articleSource;
+                article.category= articleCategory;
+                article.publishedAt= articleDate;
+                article.urlToImage= articleUrlToImage;
+                article.details = articleDetails;
+                article.url=artilceUrl;
+                console.log('new article '+article.title);
+                article.save((err) => {
+                  if (err)
+                    throw err;
+                });
+              }else if(exist!==null && typeof exist!=='undefined') {
+                console.log('article exist'+ exist.title);
+              }
+            });
         })
     });
 }
@@ -106,19 +117,19 @@ let fetchAllNewsData = (category, newsAPIurl, source, htmlScraperClass) => {
             let extractedUrlToImage = newsArticles[i].urlToImage;
             let extractedUrl = newsArticles[i].url;
 
+            // console.log(extractedTitle);
+
             scrapeArticleUrl(extractedsource, extractedcategory, extractedTitle, extractedAuthor, extractedDate, extractedTimeStamp, extractedUrlToImage, extractedUrl, extractedhtmlScraperClass);
         }
     });
 }
 
 // executes nested functions.
-let getFetchedNewsAndPostToDataBase = () => {
+module.exports.scrapeIntNews = () => {
 
-    for (let i in listofUrls_Categories) {
-        let extratedNewsParams = listofUrls_Categories[i]
+    for (let i in sources) {
+      let elements = sources[i]
 
-        fetchAllNewsData(extratedNewsParams[0], extratedNewsParams[1], extratedNewsParams[2], extratedNewsParams[3]);
+      fetchAllNewsData(elements[0], elements[1], elements[2], elements[3]);
     }
 }
-
-module.exports.getFetchedNewsAndPostToDataBase = getFetchedNewsAndPostToDataBase;

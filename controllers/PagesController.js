@@ -7,26 +7,15 @@ const Article = require('../models/Articles');
 const Category = require('../models/Categories');
 const Sources = require('../models/Sources');
 const Section = require('../models/Sections');
-const scrapeUtilityLocal = require('../utilities/scrapeLocalNews');
-const scrapeUtilityInt = require('../utilities/scrapeIntNews');
 const moment = require('moment');
 // ..........................................................................
-// Article Forms and Previews
+// Dashboard Pages
 // ..........................................................................
 //
-//scrape local news Articles
-module.exports.scrapeLocalNewsArticles = function(req, res) {
 
-  setTimeout(function () {
-    scrapeUtilityLocal.scrapeLocalNews()
-  }, 3000);
-  res.send('scraping local news...')
-}
-
-//scrape international news Articles
-module.exports.scrapeIntNewsArticles = function(req, res) {
-  setTimeout(function () {
-    scrapeUtilityInt.scrapeIntNews()
-  }, 3000);
-  res.send('scraping int news...')
+module.exports.getDashboard = async function (req, res) {
+  //let articles = Articles.find({category:'local',scaped:true},{_id:1, title:1, subject:1, displayDate:1, urlTitle:1, ult}).sort({timeStamp: -1}).limit(4)
+  res.render('dashboards/dash',{
+    // articles:artlices
+  });
 }

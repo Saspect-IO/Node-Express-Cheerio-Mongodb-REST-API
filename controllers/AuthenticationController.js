@@ -47,7 +47,6 @@ module.exports.getRegister = function(req, res) {
 module.exports.getLogin = function(req, res) {
     return res.render('auth/login', {
       title: 'Login',
-      token:Config.token,
       messages: req.flash('success'),
       messages_error: req.flash('error')
     });

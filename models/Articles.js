@@ -12,7 +12,7 @@ let ArticlesSchema = new Schema({
 	},
 	subject:{
 		type:String,
-		required:false,
+		required:false
 	},
 	details:{
 			type:String,
@@ -20,23 +20,23 @@ let ArticlesSchema = new Schema({
 	},
 	author:{
 		type:String,
-		required:false,
+		required:false
 	},
 	source:{
     type:String,
-		required:true,
+		required:true
 	},
 	category:{
 		type:String,
-		required:true,
+		required:true
 	},
 	publishedAt:{
     type:String,
-		required:true,
+		required:true
 	},
 	publishedDate:{
 		type:Date,
-		required:false,
+		required:false
 	},
 	timeStamp:{
 		type:Date,

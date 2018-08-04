@@ -2,31 +2,42 @@
 // ..........................................................................
 // IMPORTS & ALIASES
 // ..........................................................................
-const fs = require('fs');
 const Article = require('../models/Articles');
-const Category = require('../models/Categories');
-const Sources = require('../models/Sources');
-const Section = require('../models/Sections');
-const scrapeUtilityLocal = require('../utilities/scrapeLocalNews');
-const scrapeUtilityInt = require('../utilities/scrapeIntNews');
 const moment = require('moment');
 // ..........................................................................
 // Article Forms and Previews
 // ..........................................................................
 //
-//scrape local news Articles
-module.exports.scrapeLocalNewsArticles = function(req, res) {
+//get articles by category
+module.exports.getArticleByCategory = (req, res) => {
 
-  setTimeout(function () {
-    scrapeUtilityLocal.scrapeLocalNews()
-  }, 3000);
-  res.send('scraping local news...')
+  Article.find({
+    category: req.params.category
+  }, (err, articles) => {
+    console.log(articles);
+    res.json(articles)
+  });
 }
 
-//scrape international news Articles
-module.exports.scrapeIntNewsArticles = function(req, res) {
-  setTimeout(function () {
-    scrapeUtilityInt.scrapeIntNews()
-  }, 3000);
-  res.send('scraping int news...')
+//remove articles from the database 3days old.
+module.exports.cleanUpOldArticles = () => {
+  Article.find({}, function(err, Data) {
+    if (Data) {
+      let dbArticles = Data;
+
+      for (let i in dbArticles) {
+        let eachArticle = dbArticles[i];
+        let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
+        if (relativeTime == '4 days ago') {
+          Article.remove({
+            "_id": dbArticles[i]._id
+          }, (err, data) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+      }
+    }
+  });
 }

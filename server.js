@@ -3,13 +3,11 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const morgan = require('morgan');
-//const passport = require('passport');
-const flash = require('connect-flash');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const config = require('./config/database');
+const scrapeUtilityLocal = require('./utilities/scrapeLocalNews');
+const scrapeUtilityInt = require('./utilities/scrapeIntNews');
+const articlesCtrl = require('./controllers/ArticlesController');
 
 // Dev database on mlab
 mongoose.connect( config.database,{ useNewUrlParser: true });
@@ -17,9 +15,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // set routes
-const dashboard = require('./routes/dashboard');
 const api = require('./routes/api');
-
 
 // Init App
 const app = express();
@@ -27,7 +23,6 @@ const app = express();
 // CORS Middleware
 app.use(cors());
 
-app.use(morgan('combined'))
 
 //app.enable('trust proxy', true);
 
@@ -42,64 +37,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// // Express Session
-// app.use(session({
-//     secret: '',
-//     name: 'sessionId',
-//     resave: true,
-//     saveUninitialized: false,
-//     proxy: true,
-//     cookie: {
-//       //secure: true,
-//     },
-//     store: new MongoStore({
-//       mongooseConnection: db
-//     })
-// }))
+app.use('/', api);
 
+//test webscraper and old Articles clean up to make sure it works
+setTimeout(function() {
+  scrapeUtilityLocal.scrapeLocalNews();
+  scrapeUtilityInt.scrapeIntNews();
+  articlesCtrl.cleanUpOldArticles();
+  console.log('scraping');
+}, 900000000);
 
-// Express Messages Middleware
-//app.use(flash());
-
-
-// // Passport init
-// require('./config/passport')(passport);
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// app.get('*', function(req, res, next){
-//   res.locals.user = req.user || null;
-//   next();
-// });
-
-app.use('/', dashboard);
-app.use('/api', api);
-
-// app.get('*', function(req, res, next){
-//
-//   res.render('errors/error-internal-server', {
-//     title: 'Error 404 - Page not found',
-//     status:'404',
-//     msg: 'Sorry page not found',
-//     backlink:'/dashboard'
-//   });
-//   next();
-// });
-
-// Handle Global errors
-// app.use((err, req, res, next) => {
-//   if (! err) {
-//       return next();
-//   }
-//   console.log(err);
-//
-//   res.render('errors/error-internal-server', {
-//     title: 'Error 500 -  Internal Server Error',
-//     status:'500',
-//     msg: err,
-//     backlink:'/dashboard',
-//   });
-// });
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));

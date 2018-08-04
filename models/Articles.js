@@ -4,10 +4,7 @@ const Schema = mongoose.Schema;
 let ArticlesSchema = new Schema({
 	title:{
     type:String,
-		required:true,
-		unique:true,
-		text: true,
-		index: true
+		required:true
 	},
 	urlTitle:{
     type:String,
@@ -15,7 +12,7 @@ let ArticlesSchema = new Schema({
 	},
 	subject:{
 		type:String,
-		required:true,
+		required:false,
 	},
 	details:{
 			type:String,
@@ -30,9 +27,8 @@ let ArticlesSchema = new Schema({
 		required:true,
 	},
 	category:{
-		type:Array,
-		required:false,
-		default:["article"],
+		type:String,
+		required:true,
 	},
 	publishedAt:{
     type:String,
@@ -54,45 +50,6 @@ let ArticlesSchema = new Schema({
 	url:{
     type:String,
 		required:true
-	},
-	tags:{
-    	type:Array,
-    	required:false,
-		default:["article"],
-	},
-	section:{
-		type:Array,
-		required:false,
-		default:["article"],
-	},
-	userId:{
-		type:String,
-		required:false,
-		default:"anonymous"
-	},
-	scraped:{
-		type:Boolean,
-		required:false,
-		default:false
-	},
-	featured:{
-		type:Boolean,
-		required:false,
-		default:false
-	},
-	published:{
-		type:Boolean,
-		required:false,
-		default:false
-	},
-	topStory:{
-		type:Boolean,
-		required:false,
-		default:false
-	},
-	img:{
-		data: Buffer,
-		contentType: String
 	}
 }, { collection : 'articles' });
 

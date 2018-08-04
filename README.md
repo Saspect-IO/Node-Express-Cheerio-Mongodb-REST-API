@@ -1,15 +1,16 @@
 # NotiVize-Node-REST-API
 
-Revamp and code Optimization of the [NotiVize-React-Redux-Dashboard_with_Restful-API](https://github.com/Saspect-IO/NotiVize-React-Redux-Dashboard_with_Restful-API).
-This splits up the RESTful API with a dashboard from the frontend which will be PWA to read the articles.
+RESTful API Service for
+1. [NotiVize-Android-Mobile-App](https://github.com/Saspect-IO/NotiVize).
+2. [NotiVize-React-Redux-Dashboard](https://github.com/Saspect-IO/NotiVize-React-Redux-Dashboard_with_Restful-API).
 
-Existing prototype can be found at link below will be updated soon.
-Node.js Express React Redux  app [NotiVize Dashboard](https://notivize.herokuapp.com/dashboard).
+The react Dashboard Demo can be viewed [Here](https://notivize.herokuapp.com/dashboard).
 
 ## Usage
 
 Clone or download,
 npm install
+npm install -g nodemon
 nodemon server.js
 
 ## Recommendations

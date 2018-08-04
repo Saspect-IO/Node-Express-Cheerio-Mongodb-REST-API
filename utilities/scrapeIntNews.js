@@ -5,7 +5,6 @@ const moment = require('moment');
 const Article = require('../models/Articles');
 const config = require('../config/database');
 
-
 //const apiKey = 'New API key goes here'
 const apiKey = config.apiKey
 
@@ -56,80 +55,98 @@ const sources = {
     NATIONAL_GEOGRAPHY: ["science", NATIONAL_GEOGRAPHY, "NATIONAL GEOGRAPHY", '.parbase'],
 };
 
+//checke database for duplicate data
+let checkForDuplicate = async function(article) {
+
+  let dbArticle = await Article.find({
+    title: article.title
+  }, {title: 1});
+
+  if (dbArticle === null) {
+    let newArticle = new Article();
+    newArticle.title = article.articleTitle;
+    newArticle.urlTitle = (article.articleTitle).replace(/[\. ,:-]+/g, "-");
+    newArticle.articleAuthor = article.articleAuthor;
+    newArticle.source = article.articleSource;
+    newArticle.category = article.articleCategory;
+    newArticle.publishedAt = article.articleDate;
+    newArticle.urlToImage = article.articleUrlToImage;
+    newArticle.details = article.articleDetails;
+    newArticle.url = article.artilceUrl;
+    console.log('new article ' + newArticle.title);
+    newArticle.save((err) => {
+      if (err)
+        throw err;
+      }
+    );
+  } else if (dbArticle !== null) {
+    console.log('article exist' + dbArticle.title);
+  }
+}
+
 // scrapes news details from each news article url by <p> tags setup the article properties and push to Articles Object that mimics the news API JSON Structure.
 let scrapeArticleUrl = (articleSource, articleCategory, articleTitle, articleAuthor, articleDate, articleTimeStamp, articleUrlToImage, artilceUrl, htmlScraperClass) => {
 
-    axios.get(artilceUrl).then((response) => {
-        let $ = cheerio.load(response.data);
-        $(htmlScraperClass).each((i, elm) => {
-            let data = $(elm );
+  axios.get(artilceUrl).then((response) => {
+    let $ = cheerio.load(response.data);
+    $(htmlScraperClass).each((i, elm) => {
+      let data = $(elm);
 
-            let addedSpace = data.find("p").text()
-            let articleDetails = addedSpace.replace(/(.*?\.){3}/g, '$& \n\n');
-            //console.log(articleTitle);
-            Article.findOne({title:articleTitle}, function(err, exist) {
+      let addedSpace = data.find("p").text()
+      let articleDetails = addedSpace.replace(/(.*?\.){3}/g, '$& \n\n');
 
-              if (exist===null && typeof exist==='undefined') {
-                let article = new Article();
-                article.title=articleTitle;
-                article.urlTitle = (articleTitle).replace(/[\. ,:-]+/g, "-");
-                article.articleAuthor=articleAuthor;
-                article.source=articleSource;
-                article.category= articleCategory;
-                article.publishedAt= articleDate;
-                article.urlToImage= articleUrlToImage;
-                article.details = articleDetails;
-                article.url=artilceUrl;
-                console.log('new article '+article.title);
-                article.save((err) => {
-                  if (err)
-                    throw err;
-                });
-              }else if(exist!==null && typeof exist!=='undefined') {
-                console.log('article exist'+ exist.title);
-              }
-            });
-        })
+      checkForDuplicate({
+        source: articleSource,
+        category: articleCategory,
+        title: articleTitle,
+        author: articleAuthor,
+        publishedAt: articleDate,
+        timeStamp: articleTimeStamp,
+        urlToImage: articleUrlToImage,
+        description: articleDetails,
+        url: artilceUrl
+      });
     });
+  });
 }
 
 //fetch data json data from news api for each link and pass on data to scrapeArticleUrl.
 let fetchAllNewsData = (category, newsAPIurl, source, htmlScraperClass) => {
-    request(newsAPIurl, (err, response, rawData) => {
+  request(newsAPIurl, (err, response, rawData) => {
 
-        if (err) {
-            throw err;
-        }
+    if (err) {
+      throw err;
+    }
 
-        let body = JSON.parse(rawData);
-        let newsArticles = body.articles;
-        let displayDate = moment().format("MMM Do YY");
-        let timeStamp = moment().format("YYYYMMDD");
+    let body = JSON.parse(rawData);
+    let newsArticles = body.articles;
+    let displayDate = moment().format("MMM Do YY");
+    let timeStamp = moment().format("YYYYMMDD");
 
-        for (let i in newsArticles) {
-            let extractedsource = source;
-            let extractedcategory = category;
-            let extractedhtmlScraperClass = htmlScraperClass;
-            let extractedTitle = newsArticles[i].title;
-            let extractedAuthor = newsArticles[i].author;
-            let extractedDate = displayDate;
-            let extractedTimeStamp = timeStamp;
-            let extractedUrlToImage = newsArticles[i].urlToImage;
-            let extractedUrl = newsArticles[i].url;
+    for (let i in newsArticles) {
+      let extractedsource = source;
+      let extractedcategory = category;
+      let extractedhtmlScraperClass = htmlScraperClass;
+      let extractedTitle = newsArticles[i].title;
+      let extractedAuthor = newsArticles[i].author;
+      let extractedDate = displayDate;
+      let extractedTimeStamp = timeStamp;
+      let extractedUrlToImage = newsArticles[i].urlToImage;
+      let extractedUrl = newsArticles[i].url;
 
-            // console.log(extractedTitle);
+      // console.log(extractedTitle);
 
-            scrapeArticleUrl(extractedsource, extractedcategory, extractedTitle, extractedAuthor, extractedDate, extractedTimeStamp, extractedUrlToImage, extractedUrl, extractedhtmlScraperClass);
-        }
-    });
+      scrapeArticleUrl(extractedsource, extractedcategory, extractedTitle, extractedAuthor, extractedDate, extractedTimeStamp, extractedUrlToImage, extractedUrl, extractedhtmlScraperClass);
+    }
+  });
 }
 
 // executes nested functions.
 module.exports.scrapeIntNews = () => {
 
-    for (let i in sources) {
-      let elements = sources[i]
+  for (let i in sources) {
+    let elements = sources[i]
 
-      fetchAllNewsData(elements[0], elements[1], elements[2], elements[3]);
-    }
+    fetchAllNewsData(elements[0], elements[1], elements[2], elements[3]);
+  }
 }

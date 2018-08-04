@@ -1,3 +1,4 @@
+"use strict";
 // ..........................................................................
 // Imported library
 // ..........................................................................
@@ -9,8 +10,7 @@ const articlesCtrl = require('../controllers/ArticlesController');
 // Frontend API Routes
 // ..........................................................................
 //
-//
-
+router.get('/api/:category', articlesCtrl.getArticleByCategory);
 
 
 

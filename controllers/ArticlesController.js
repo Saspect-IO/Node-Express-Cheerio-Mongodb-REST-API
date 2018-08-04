@@ -10,7 +10,6 @@ const moment = require('moment');
 //
 //get articles by category
 module.exports.getArticleByCategory = (req, res) => {
-
   Article.find({
     category: req.params.category
   }, (err, articles) => {
@@ -28,7 +27,7 @@ module.exports.cleanUpOldArticles = () => {
       for (let i in dbArticles) {
         let eachArticle = dbArticles[i];
         let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
-        if (relativeTime == '4 days ago') {
+        if (relativeTime == '5 days ago') {
           Article.remove({
             "_id": dbArticles[i]._id
           }, (err, data) => {

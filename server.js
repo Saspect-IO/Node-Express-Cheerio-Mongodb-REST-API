@@ -23,9 +23,6 @@ const app = express();
 // CORS Middleware
 app.use(cors());
 
-
-//app.enable('trust proxy', true);
-
 // view engine setup
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

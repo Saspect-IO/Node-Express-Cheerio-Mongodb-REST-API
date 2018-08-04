@@ -58,29 +58,31 @@ const sources = {
 //checke database for duplicate data
 let checkForDuplicate = async function(article) {
 
-  let dbArticle = await Article.find({
-    title: article.title
-  }, {title: 1});
+  if (typeof article!=='undefined') {
+    let dbArticle = await Article.find({
+      title: article.title
+    }, {title: 1});
 
-  if (dbArticle === null) {
-    let newArticle = new Article();
-    newArticle.title = article.articleTitle;
-    newArticle.urlTitle = (article.articleTitle).replace(/[\. ,:-]+/g, "-");
-    newArticle.articleAuthor = article.articleAuthor;
-    newArticle.source = article.articleSource;
-    newArticle.category = article.articleCategory;
-    newArticle.publishedAt = article.articleDate;
-    newArticle.urlToImage = article.articleUrlToImage;
-    newArticle.details = article.articleDetails;
-    newArticle.url = article.artilceUrl;
-    console.log('new article ' + newArticle.title);
-    newArticle.save((err) => {
-      if (err)
-        throw err;
-      }
-    );
-  } else if (dbArticle !== null) {
-    console.log('article exist' + dbArticle.title);
+    if (dbArticle.length) {
+      console.log('article exist ' + dbArticle.title);
+    } else{
+      console.log('new article ' + article.title+' '+article.source);
+      let newArticle = new Article();
+      newArticle.title = article.title;
+      newArticle.urlTitle = (article.title).replace(/[\. ,:-]+/g, "-");
+      newArticle.articleAuthor = article.author;
+      newArticle.source = article.source;
+      newArticle.category = article.category;
+      newArticle.publishedAt = article.publishedAt;
+      newArticle.urlToImage = article.urlToImage;
+      newArticle.details = article.details;
+      newArticle.url = article.url;
+      newArticle.save((err) => {
+        if (err)
+          throw err;
+        }
+      );
+    }
   }
 }
 
@@ -95,18 +97,22 @@ let scrapeArticleUrl = (articleSource, articleCategory, articleTitle, articleAut
       let addedSpace = data.find("p").text()
       let articleDetails = addedSpace.replace(/(.*?\.){3}/g, '$& \n\n');
 
-      checkForDuplicate({
-        source: articleSource,
-        category: articleCategory,
-        title: articleTitle,
-        author: articleAuthor,
-        publishedAt: articleDate,
-        timeStamp: articleTimeStamp,
-        urlToImage: articleUrlToImage,
-        description: articleDetails,
-        url: artilceUrl
-      });
+      return articleDetails
     });
+  }).then((articleDetails)=>{
+    checkForDuplicate({
+      source: articleSource,
+      category: articleCategory,
+      title: articleTitle,
+      author: articleAuthor,
+      publishedAt: articleDate,
+      timeStamp: articleTimeStamp,
+      urlToImage: articleUrlToImage,
+      description: articleDetails,
+      url: artilceUrl
+    });
+  }).catch(() => {
+      console.log("Promise Rejected");
   });
 }
 
@@ -124,19 +130,7 @@ let fetchAllNewsData = (category, newsAPIurl, source, htmlScraperClass) => {
     let timeStamp = moment().format("YYYYMMDD");
 
     for (let i in newsArticles) {
-      let extractedsource = source;
-      let extractedcategory = category;
-      let extractedhtmlScraperClass = htmlScraperClass;
-      let extractedTitle = newsArticles[i].title;
-      let extractedAuthor = newsArticles[i].author;
-      let extractedDate = displayDate;
-      let extractedTimeStamp = timeStamp;
-      let extractedUrlToImage = newsArticles[i].urlToImage;
-      let extractedUrl = newsArticles[i].url;
-
-      // console.log(extractedTitle);
-
-      scrapeArticleUrl(extractedsource, extractedcategory, extractedTitle, extractedAuthor, extractedDate, extractedTimeStamp, extractedUrlToImage, extractedUrl, extractedhtmlScraperClass);
+      scrapeArticleUrl(source, category, newsArticles[i].title, newsArticles[i].author, displayDate, timeStamp, newsArticles[i].urlToImage, newsArticles[i].url, htmlScraperClass);
     }
   });
 }

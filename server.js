@@ -34,19 +34,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
-
+// set init url path for api routes
 app.use('/', api);
 
 //test webscraper and old Articles clean up to make sure it works
-setTimeout(function() {
-  scrapeUtilityLocal.scrapeLocalNews();
-  scrapeUtilityInt.scrapeIntNews();
-  articlesCtrl.cleanUpOldArticles();
-  console.log('scraping');
+ setInterval(function () {
+   scrapeUtilityLocal.scrapeLocalNews();
+   scrapeUtilityInt.scrapeIntNews();
+   articlesCtrl.cleanUpOldArticles();
+   console.log('scraping');
 }, 900000000);
-
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));

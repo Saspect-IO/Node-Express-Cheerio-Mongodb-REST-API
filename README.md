@@ -8,7 +8,7 @@ The react Dashboard Demo can be viewed [Here](https://notivize.herokuapp.com/das
 
 ## Usage
 
-Clone or download,
+Clone or download repo,
 npm install
 npm install -g nodemon
 nodemon server.js

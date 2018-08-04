@@ -11,7 +11,7 @@ The react Dashboard Demo can be viewed [here](https://notivize.herokuapp.com/das
 Clone or download repo
 npm install
 npm install -g nodemon
-nodemon server.js
+open cli in project folder and run nodemon server.js
 
 ## Recommendations
 

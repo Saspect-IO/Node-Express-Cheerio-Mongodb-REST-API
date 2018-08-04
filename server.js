@@ -9,7 +9,7 @@ const scrapeUtilityLocal = require('./utilities/scrapeLocalNews');
 const scrapeUtilityInt = require('./utilities/scrapeIntNews');
 const articlesCtrl = require('./controllers/ArticlesController');
 
-// Dev database on mlab
+// test database on mlab
 mongoose.connect( config.database,{ useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

@@ -4,7 +4,7 @@ RESTful API Service for
 1. [NotiVize-Android-Mobile-App](https://github.com/Saspect-IO/NotiVize).
 2. [NotiVize-React-Redux-Dashboard](https://github.com/Saspect-IO/NotiVize-React-Redux-Dashboard_with_Restful-API).
 
-The react Dashboard Demo can be viewed [Here](https://notivize.herokuapp.com/dashboard).
+The react Dashboard Demo can be viewed [here](https://notivize.herokuapp.com/dashboard).
 
 ## Usage
 

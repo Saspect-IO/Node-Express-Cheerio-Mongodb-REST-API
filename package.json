@@ -39,5 +39,4 @@
     "pug": "^2.0.0-rc.4",
     "randomstring": "^1.1.5"
   },
-  "devDependencies": {}
 }

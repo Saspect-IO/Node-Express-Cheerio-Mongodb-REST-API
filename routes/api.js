@@ -12,6 +12,4 @@ const articlesCtrl = require('../controllers/ArticlesController');
 //
 router.get('/api/:category', articlesCtrl.getArticleByCategory);
 
-
-
 module.exports = router;

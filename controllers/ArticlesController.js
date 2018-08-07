@@ -12,12 +12,51 @@ const moment = require('moment');
 module.exports.getArticleByCategory = (req, res) => {
   Article.find({
     category: req.params.category
-  }, (err, articles) => {
-    console.log(articles);
-    res.json(articles)
+  }, (err, dbArticles) => {
+    //restructure like news api
+    res.json({
+      articles: dbArticles.map((dbArticles) => {
+        return {
+          id: dbArticles._id,
+          source: dbArticles.source,
+          category: dbArticles.category,
+          title: dbArticles.title,
+          author: dbArticles.author,
+          publishedAt: dbArticles.publishedAt,
+          timeStamp: dbArticles.timeStamp,
+          urlToImage: dbArticles.urlToImage,
+          description: dbArticles.description,
+          url: dbArticles.url,
+          mview: dbArticles.mview
+        }
+      })
+    });
   });
 }
 
+//to update article view
+module.exports.updateArticleById = (req, res) => {
+  let newData = {
+    $set: {
+      source: req.body.Articles.source,
+      category: req.body.Articles.category,
+      title: req.body.Articles.title,
+      author: req.body.Articles.author,
+      publishedAt: req.body.Articles.publishedAt,
+      timeStamp: req.body.Articles.timeStamp,
+      urlToImage: req.body.Articles.urlToImage,
+      description: req.body.Articles.description,
+      url: req.body.Articles.url,
+      mview: req.body.Articles.mview
+    }
+  }
+  console.log("test: "+newData);
+  Article.update(req.body._id, newData, (err) => {
+    if (err)
+      throw err;
+    res.json("Article Updated")
+  });
+}
 //remove articles from the database 3days old.
 module.exports.cleanUpOldArticles = () => {
   Article.find({}, function(err, Data) {

@@ -10,6 +10,8 @@ const articlesCtrl = require('../controllers/ArticlesController');
 // Frontend API Routes
 // ..........................................................................
 //
-router.get('/api/:category', articlesCtrl.getArticleByCategory);
+router.get('/api/articles/:category', articlesCtrl.getArticleByCategory);
+
+router.post('/api/articles/updateArticle', articlesCtrl.updateArticleById);
 
 module.exports = router;

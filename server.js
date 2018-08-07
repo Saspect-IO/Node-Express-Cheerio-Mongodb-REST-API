@@ -10,7 +10,7 @@ const scrapeUtilityInt = require('./utilities/scrapeIntNews');
 const articlesCtrl = require('./controllers/ArticlesController');
 
 // test database on mlab
-mongoose.connect( config.database,{ useNewUrlParser: true });
+mongoose.connect( config.db,{ useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -35,12 +35,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', api);
 
 //test webscraper and old Articles clean up to make sure it works
+// setTimeout(function () {
+//   scrapeUtilityLocal.scrapeLocalNews();
+//   scrapeUtilityInt.scrapeIntNews();
+//   articlesCtrl.cleanUpOldArticles();
+//   console.log('scraping');
+// }, 900);
+
+//scrapes data every 12 hrs
  setInterval(function () {
    scrapeUtilityLocal.scrapeLocalNews();
    scrapeUtilityInt.scrapeIntNews();
    articlesCtrl.cleanUpOldArticles();
    console.log('scraping');
-}, 900000000);
+}, 43200000);
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));

@@ -14,7 +14,7 @@ let ArticlesSchema = new Schema({
 		type:String,
 		required:false
 	},
-	details:{
+	description:{
 			type:String,
 			required:false
 	},
@@ -50,6 +50,11 @@ let ArticlesSchema = new Schema({
 	url:{
     type:String,
 		required:true
+	},
+	mview: {
+			type:String,
+			required:false,
+			default:""
 	}
 }, { collection : 'articles' });
 

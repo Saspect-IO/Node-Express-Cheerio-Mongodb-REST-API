@@ -75,7 +75,7 @@ let checkForDuplicate = async function(article) {
       newArticle.category = article.category;
       newArticle.publishedAt = article.publishedAt;
       newArticle.urlToImage = article.urlToImage;
-      newArticle.details = article.details;
+      newArticle.description= article.description;
       newArticle.url = article.url;
       newArticle.save((err) => {
         if (err)
@@ -91,14 +91,16 @@ let scrapeArticleUrl = (articleSource, articleCategory, articleTitle, articleAut
 
   axios.get(artilceUrl).then((response) => {
     let $ = cheerio.load(response.data);
+    let details = null;
     $(htmlScraperClass).each((i, elm) => {
       let data = $(elm);
-
-      let addedSpace = data.find("p").text()
+      let addedSpace = data.find("p").text();
       let articleDetails = addedSpace.replace(/(.*?\.){3}/g, '$& \n\n');
-
-      return articleDetails
+      return (details = articleDetails)
     });
+    if (details!= null) {
+      return details
+    }
   }).then((articleDetails)=>{
     checkForDuplicate({
       source: articleSource,

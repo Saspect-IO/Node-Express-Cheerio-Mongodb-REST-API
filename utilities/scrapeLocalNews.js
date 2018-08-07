@@ -6,14 +6,14 @@ const Article = require('../models/Articles');
 
 let sources = [{
   category:"local",
-  headlineUrl:'http://jamaica-gleaner.com/lead',
+  sourceUrl:'http://jamaica-gleaner.com/lead',
   mediaName:"GLEANER",
   htmlScraperClass:'div.views-row'
 }];
 
-let getNewsParams = (category, headlineUrl, source, htmlScraperClass) => {
+let getNewsParams = (category, sourceUrl, source, htmlScraperClass) => {
 
-  axios.get(headlineUrl).then((response) => {
+  axios.get(sourceUrl).then((response) => {
 
     let $ = cheerio.load(response.data);
     $(htmlScraperClass).each((i, elm) => {
@@ -21,6 +21,7 @@ let getNewsParams = (category, headlineUrl, source, htmlScraperClass) => {
 
       let title = data.find(".field-content a").text();
       let subject = data.find(".field-content").text();
+      let headlineUrl = data.find(".field-content a").attr('href');
       let urlToImage = data.find('img').attr('src');
       let displayDate = moment().format("MMM Do YY");
 
@@ -37,20 +38,18 @@ let getNewsParams = (category, headlineUrl, source, htmlScraperClass) => {
             article.category= category;
             article.publishedAt= displayDate;
             article.urlToImage= urlToImage;
-            article.url=headlineUrl;
+            article.url= headlineUrl;
             console.log('new article '+article.title);
             article.save((err) => {
               if (err){
                 console.log(err);
               }
-
             });
           }else if(exist!==null) {
             console.log('article exist '+ exist.title);
           }
         });
       }
-
     });
   });
 }
@@ -60,6 +59,6 @@ module.exports.scrapeLocalNews = () => {
   for (let i=0; i < sources.length; i++) {
       let elements = sources[i]
 
-      getNewsParams(elements.category,  elements.headlineUrl, elements.mediaName,  elements.htmlScraperClass);
+      getNewsParams(elements.category,  elements.sourceUrl, elements.mediaName,  elements.htmlScraperClass);
   }
 }

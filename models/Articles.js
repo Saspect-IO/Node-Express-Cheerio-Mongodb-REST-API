@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 // Articles Schema
 let ArticlesSchema = new Schema({
 	title:{
-    type:String,
+		type:String,
+		unique:true,
 		required:true
 	},
 	urlTitle:{

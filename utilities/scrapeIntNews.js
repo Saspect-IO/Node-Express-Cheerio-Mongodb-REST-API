@@ -1,4 +1,5 @@
 const axios = require('axios');
+const request = require('request');
 const cheerio = require('cheerio');
 const moment = require('moment');
 const Article = require('../models/Articles');
@@ -57,32 +58,23 @@ const sources = {
 //checke database for duplicate data
 let checkForDuplicate = async function(article) {
 
-  if (typeof article!=='undefined') {
-    let dbArticle = await Article.find({
-      title: article.title
-    }, {title: 1});
-
-    if (dbArticle.length) {
-      console.log('article exist ' + dbArticle.title);
-    } else{
-      console.log('new article ' + article.title+' '+article.source);
-      let newArticle = new Article();
-      newArticle.title = article.title;
-      newArticle.urlTitle = (article.title).replace(/[\. ,:-]+/g, "-");
-      newArticle.articleAuthor = article.author;
-      newArticle.source = article.source;
-      newArticle.category = article.category;
-      newArticle.publishedAt = article.publishedAt;
-      newArticle.urlToImage = article.urlToImage;
-      newArticle.description= article.description;
-      newArticle.url = article.url;
-      newArticle.save((err) => {
-        if (err)
-          throw err;
-        }
-      );
-    }
+  let newData = {
+      title:article.title,
+      urlTitle:(article.title).replace(/[\. ,:-]+/g, "-"),
+      articleAuthor:article.author,
+      source:article.source,
+      category:article.category,
+      publishedAt:article.publishedAt,
+      urlToImage:article.urlToImage,
+      descriptio:article.description,
+      url:article.url
   }
+  console.log("test: "+newData);
+  Article.updateOne({title:{$ne:newData.title}}, newData, {upsert:true}, (err) => {
+    if (err)
+      throw err;
+    res.json("Article Added")
+  });
 }
 
 // scrapes news details from each news article url by <p> tags setup the article properties and push to Articles Object that mimics the news API JSON Structure.
@@ -117,7 +109,7 @@ let scrapeArticleUrl = (articleSource, articleCategory, articleTitle, articleAut
   });
 }
 
-//fetch data json data from news api for each link and pass on data to scrapeArticleUrl.
+//fetch json data from news api for each link and pass on data to scrapeArticleUrl.
 let fetchAllNewsData = (category, newsAPIurl, source, htmlScraperClass) => {
   request(newsAPIurl, (err, response, rawData) => {
 
@@ -138,10 +130,8 @@ let fetchAllNewsData = (category, newsAPIurl, source, htmlScraperClass) => {
 
 // executes nested functions.
 module.exports.scrapeIntNews = () => {
-
   for (let i in sources) {
     let elements = sources[i]
-
     fetchAllNewsData(elements[0], elements[1], elements[2], elements[3]);
   }
 }

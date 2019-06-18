@@ -1,12 +1,11 @@
 const axios = require('axios');
-const request = require('request');
 const cheerio = require('cheerio');
 const moment = require('moment');
 const Article = require('../models/Articles');
-const config = require('../config/database');
+const config = require('../config/env');
 
 //const apiKey = 'New API key goes here'
-const apiKey = config.apiKey
+const apiKey = config.apiKeys.newsAPI
 
 // NEWS api end points with apiKey
 const TNW = 'https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=' + apiKey;

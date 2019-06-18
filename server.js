@@ -3,23 +3,30 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const config = require('./config/env');
 const mongoose = require('mongoose');
-const config = require('./config/database');
 const scrapeUtilityLocal = require('./utilities/scrapeLocalNews');
 const scrapeUtilityInt = require('./utilities/scrapeIntNews');
 const articlesCtrl = require('./controllers/ArticlesController');
+const api = require('./routes/api');
 
-// test database on mlab
-mongoose.connect( config.db,{ useNewUrlParser: true });
+// ..........................................................................
+// Connect to Atlas with mongoose
+// ..........................................................................
+mongoose.connect( config.db.host);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-// set routes
-const api = require('./routes/api');
-
+// ..........................................................................
 // Init App
+// ..........................................................................
 const app = express();
 
+// ..........................................................................
+// App Middleware
+// ..........................................................................
+//security protocol
+app.use(helmet());
 // CORS Middleware
 app.use(cors());
 
@@ -50,9 +57,12 @@ app.use('/', api);
    console.log('scraping');
 }, 43200000);
 
+// ..........................................................................
+// Port Settings
+// ..........................................................................
 // Set Port
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (config.app.webserver.port));
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), ()=> {
     console.log('Server started on port ' + app.get('port'));
 });

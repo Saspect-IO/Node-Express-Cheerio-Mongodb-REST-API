@@ -1,7 +1,5 @@
 "use strict";
-const editJsonFile = require("edit-json-file");
-require('dotenv').config()
-let file = editJsonFile(`${__dirname}/env.json`);
+require('dotenv').config();
 
 const dev = {
     app: {
@@ -12,9 +10,6 @@ const dev = {
     },
     db: {
         host: process.env.DEV_DB_HOST
-    },
-    settings: {
-        fileSizeLimit: file.get("fileSizeLimit.value")
     },
     apikeys:{
         newsAPI:process.env.NEWS_API_KEY
@@ -30,9 +25,6 @@ const prod = {
     },
     db: {
         host: process.env.PROD_DB_HOST
-    },
-    settings: {
-        fileSizeLimit: file.get("settings.fileSizeLimit")
     },
     apikeys:{
         newsAPI:process.env.NEWS_API_KEY

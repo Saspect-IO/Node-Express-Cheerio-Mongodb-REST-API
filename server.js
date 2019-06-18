@@ -51,7 +51,6 @@ app.use('/', api);
 
 //scrapes data every 12 hrs
  setInterval(function () {
-   scrapeUtilityLocal.scrapeLocalNews();
    scrapeUtilityInt.scrapeIntNews();
    articlesCtrl.cleanUpOldArticles();
    console.log('scraping');

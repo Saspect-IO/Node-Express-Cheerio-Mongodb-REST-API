@@ -51,7 +51,7 @@ module.exports.updateArticleById = (req, res) => {
     }
   }
   console.log("test: "+newData);
-  Article.update(req.body._id, newData, (err) => {
+  Article.updateOne(req.body._id, newData, (err) => {
     if (err)
       throw err;
     res.json("Article Updated")

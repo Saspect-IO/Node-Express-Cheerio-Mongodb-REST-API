@@ -1,5 +1,4 @@
 const axios = require('axios');
-const request = require('request');
 const cheerio = require('cheerio');
 const moment = require('moment');
 const Article = require('../models/Articles');

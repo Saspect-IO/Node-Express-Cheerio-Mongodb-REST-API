@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 const config = require('./config/env');
 const mongoose = require('mongoose');
 const scrapeUtilityInt = require('./utilities/scrapeIntNews');
@@ -12,7 +13,7 @@ const api = require('./routes/api');
 // ..........................................................................
 // Connect to Atlas with mongoose
 // ..........................................................................
-mongoose.connect( config.db.host);
+mongoose.connect( config.db.host, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -42,7 +43,6 @@ app.use('/', api);
 
 //test webscraper and old Articles clean up to make sure it works
 // setTimeout(function () {
-//   scrapeUtilityLocal.scrapeLocalNews();
 //   scrapeUtilityInt.scrapeIntNews();
 //   articlesCtrl.cleanUpOldArticles();
 //   console.log('scraping');

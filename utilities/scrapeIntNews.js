@@ -6,7 +6,7 @@ const Article = require('../models/Articles');
 const config = require('../config/env');
 
 //const apiKey = 'New API key goes here'
-const apiKey = config.apiKeys.newsAPI
+const apiKey = config.apikeys.newsAPI
 
 // NEWS api end points with apiKey
 const TNW = 'https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=' + apiKey;
@@ -58,23 +58,32 @@ const sources = {
 //checke database for duplicate data
 let checkForDuplicate = async function(article) {
 
-  let newData = {
-      title:article.title,
-      urlTitle:(article.title).replace(/[\. ,:-]+/g, "-"),
-      articleAuthor:article.author,
-      source:article.source,
-      category:article.category,
-      publishedAt:article.publishedAt,
-      urlToImage:article.urlToImage,
-      descriptio:article.description,
-      url:article.url
+  if (typeof article!=='undefined') {
+    let dbArticle = await Article.find({
+      title: article.title
+    }, {title: 1});
+
+    if (dbArticle.length) {
+      console.log('article exist ' + dbArticle.title);
+    } else{
+      console.log('new article ' + article.title+' '+article.source);
+      let newArticle = new Article();
+      newArticle.title = article.title;
+      newArticle.urlTitle = (article.title).replace(/[\. ,:-]+/g, "-");
+      newArticle.articleAuthor = article.author;
+      newArticle.source = article.source;
+      newArticle.category = article.category;
+      newArticle.publishedAt = article.publishedAt;
+      newArticle.urlToImage = article.urlToImage;
+      newArticle.description= article.description;
+      newArticle.url = article.url;
+      newArticle.save((err) => {
+        if (err)
+          throw err;
+        }
+      );
+    }
   }
-  console.log("test: "+newData);
-  Article.updateOne({title:{$ne:newData.title}}, newData, {upsert:true}, (err) => {
-    if (err)
-      throw err;
-    res.json("Article Added")
-  });
 }
 
 // scrapes news details from each news article url by <p> tags setup the article properties and push to Articles Object that mimics the news API JSON Structure.

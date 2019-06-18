@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const config = require('./config/env');
 const mongoose = require('mongoose');
-const scrapeUtilityLocal = require('./utilities/scrapeLocalNews');
 const scrapeUtilityInt = require('./utilities/scrapeIntNews');
 const articlesCtrl = require('./controllers/ArticlesController');
 const api = require('./routes/api');

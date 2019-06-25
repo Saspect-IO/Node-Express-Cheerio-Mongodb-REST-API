@@ -11,8 +11,8 @@ const dev = {
     db: {
         host: process.env.DEV_DB_HOST
     },
-    apikeys:{
-        newsAPI:process.env.NEWS_API_KEY
+    apikeys: {
+        newsAPI: process.env.NEWS_API_KEY
     }
 };
 
@@ -26,8 +26,8 @@ const prod = {
     db: {
         host: process.env.PROD_DB_HOST
     },
-    apikeys:{
-        newsAPI:process.env.NEWS_API_KEY
+    apikeys: {
+        newsAPI: process.env.NEWS_API_KEY
     }
 };
 

@@ -50,7 +50,7 @@ module.exports.updateArticleById = (req, res) => {
       mview: req.body.Articles.mview
     }
   }
-  console.log("test: "+newData);
+  console.log("test: " + newData);
   Article.updateOne(req.body._id, newData, (err) => {
     if (err)
       throw err;
@@ -59,7 +59,7 @@ module.exports.updateArticleById = (req, res) => {
 }
 //remove articles from the database 3days old.
 module.exports.cleanUpOldArticles = () => {
-  Article.find({}, function(err, Data) {
+  Article.find({}, function (err, Data) {
     if (Data) {
       let dbArticles = Data;
 

@@ -42,18 +42,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', api);
 
 //test webscraper and old Articles clean up to make sure it works
-// setTimeout(function () {
-//   scrapeUtilityInt.scrapeIntNews();
-//   articlesCtrl.cleanUpOldArticles();
-//   console.log('scraping');
-// }, 900);
+setTimeout(function () {
+  //scrapeUtilityInt.scrapeIntNews();
+  articlesCtrl.cleanUpOldArticles();
+  console.log('scraping');
+}, 900);
 
 //scrapes data every 12 hrs
- setInterval(function () {
-   scrapeUtilityInt.scrapeIntNews();
-   articlesCtrl.cleanUpOldArticles();
-   console.log('scraping');
-}, 43200000);
+//  setInterval(function () {
+//    //scrapeUtilityInt.scrapeIntNews();
+//    articlesCtrl.cleanUpOldArticles();
+//    console.log('scraping');
+// }, 43200000);
 
 // ..........................................................................
 // Port Settings

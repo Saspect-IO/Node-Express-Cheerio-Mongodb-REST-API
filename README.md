@@ -1,5 +1,7 @@
 # NotiVize-Node-REST-API
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Saspect-IO/NotiVize-Node-MongoDB-ATLAS-REST-API.svg)](https://greenkeeper.io/)
+
 RESTful API Service for
 1. [NotiVize-Android-Mobile-App](https://github.com/Saspect-IO/NotiVize).
 2. [NotiVize-React-Redux-Dashboard](https://github.com/Saspect-IO/NotiVize-React-Redux-Dashboard_with_Restful-API).

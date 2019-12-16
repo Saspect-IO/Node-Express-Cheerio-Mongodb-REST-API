@@ -9,29 +9,25 @@ const moment = require('moment');
 // ..........................................................................
 //
 //get articles by category
-module.exports.getArticleByCategory = (req, res) => {
-  Article.find({
-    category: req.params.category
-  }, (err, dbArticles) => {
-    //restructure like news api
-    res.json({
-      articles: dbArticles.map((dbArticles) => {
-        return {
-          id: dbArticles._id,
-          source: dbArticles.source,
-          category: dbArticles.category,
-          title: dbArticles.title,
-          author: dbArticles.author,
-          publishedAt: dbArticles.publishedAt,
-          timeStamp: dbArticles.timeStamp,
-          urlToImage: dbArticles.urlToImage,
-          description: dbArticles.description,
-          url: dbArticles.url,
-          mview: dbArticles.mview
-        }
-      })
-    });
-  });
+module.exports.getArticleByCategory = async (req, res) => {
+
+  let articles = (await Article.find({category: req.params.category})).map((article) => {
+    return {
+      id: article._id,
+      source: article.source,
+      category: article.category,
+      title: article.title,
+      author: article.author,
+      publishedAt: article.publishedAt,
+      timeStamp: article.timeStamp,
+      urlToImage: article.urlToImage,
+      description: article.description,
+      url: article.url,
+      mview: article.mview
+    }
+  })
+
+  res.json({articles})
 }
 
 //to update article view
@@ -58,24 +54,38 @@ module.exports.updateArticleById = (req, res) => {
   });
 }
 //remove articles from the database 3days old.
-module.exports.cleanUpOldArticles = () => {
-  Article.find({}, function (err, Data) {
-    if (Data) {
-      let dbArticles = Data;
-
-      for (let i in dbArticles) {
-        let eachArticle = dbArticles[i];
-        let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
-        if (relativeTime == '5 days ago') {
-          Article.remove({
-            "_id": dbArticles[i]._id
-          }, (err, data) => {
-            if (err) {
-              throw err;
-            }
-          });
-        }
+module.exports.cleanUpOldArticles = async () => {
+  let articles =  await Article.find(
+    {timeStamp:
+      {
+        $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000)))
       }
     }
-  });
+  )
+
+  let test = Date((new Date().getTime() + (15 * 24 * 60 * 60 * 1000)));
+
+  console.log(test);
+  
+
+
+  // Article.find({}, function (err, Data) {
+  //   if (Data) {
+  //     let dbArticles = Data;
+
+  //     for (let i in dbArticles) {
+  //       let eachArticle = dbArticles[i];
+  //       let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
+  //       if (relativeTime == '5 days ago') {
+  //         Article.remove({
+  //           "_id": dbArticles[i]._id
+  //         }, (err, data) => {
+  //           if (err) {
+  //             throw err;
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  // });
 }

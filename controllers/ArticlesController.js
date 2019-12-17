@@ -63,9 +63,9 @@ module.exports.cleanUpOldArticles = async () => {
     }
   )
 
-  let test = Date((new Date().getTime() + (15 * 24 * 60 * 60 * 1000)));
+  // let test = Date((new Date().getTime() + (15 * 24 * 60 * 60 * 1000)));
 
-  console.log(test);
+  // console.log(test);
   
 
 

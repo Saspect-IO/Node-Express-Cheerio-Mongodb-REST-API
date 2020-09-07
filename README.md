@@ -2,7 +2,6 @@
 
 RESTful API Service for
 1. [NotiVize-Android-Mobile-App](https://github.com/Saspect-IO/NotiVize).
-2. [NotiVize-React-Redux-Dashboard](https://github.com/Saspect-IO/NotiVize-React-Redux-Dashboard_with_Restful-API).
 
 The REST API Demo on heroku to return json data by categories be found at links below
 1. [tech](https://notivize2.herokuapp.com/api/articles/tech)

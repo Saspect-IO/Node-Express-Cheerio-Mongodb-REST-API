@@ -14,9 +14,8 @@ module.exports.saveArticles = async function(article) {
 
   if (article!==undefined) {
     let dbArticle = await Article.find({title: article.title}, {title: 1});
-
-    if (dbArticle && dbArticle.length!==0) {
-      console.log('article exist ' + dbArticle.title);
+    if (dbArticle && dbArticle.length > 0) {
+      console.log('article exist ' + dbArticle[0].title);
     } else {
       console.log('new article ' + article.title+' '+article.source);
       let newArticle = new Article(article);
@@ -73,38 +72,24 @@ module.exports.updateArticleById = (req, res) => {
   });
 }
 //remove articles from the database 3days old.
-// module.exports.cleanUpOldArticles = async () => {
-//   let articles =  await Article.find(
-//     {timeStamp:
-//       {
-//         $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000)))
-//       }
-//     }
-//   )
+module.exports.cleanUpOldArticles = async () => {
+  Article.find({}, function (err, Data) {
+    if (Data) {
+      let dbArticles = Data;
 
-//   let test = Date((new Date().getTime() + (15 * 24 * 60 * 60 * 1000)));
-
-//   console.log(test);
-  
-
-
-//   Article.find({}, function (err, Data) {
-//     if (Data) {
-//       let dbArticles = Data;
-
-//       for (let i in dbArticles) {
-//         let eachArticle = dbArticles[i];
-//         let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
-//         if (relativeTime == '5 days ago') {
-//           Article.remove({
-//             "_id": dbArticles[i]._id
-//           }, (err, data) => {
-//             if (err) {
-//               throw err;
-//             }
-//           });
-//         }
-//       }
-//     }
-//   });
-// }
+      for (let i in dbArticles) {
+        let eachArticle = dbArticles[i];
+        let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
+        if (relativeTime == '5 days ago') {
+          Article.remove({
+            "_id": dbArticles[i]._id
+          }, (err, data) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+      }
+    }
+  });
+}

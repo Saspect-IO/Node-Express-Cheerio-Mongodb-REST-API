@@ -20,7 +20,7 @@ module.exports.scrapeArticleDetail = async (artilceUrl, htmlScraperClass) => {
 module.exports.getNewsHeadline = async (url) => {
   try {
     const resp = await axios.get(url);
-    let newsArticle = resp.data;
+    let newsArticle = resp.data.articles;
     return newsArticle
   } catch (err) {
     console.error(err);

@@ -6,8 +6,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const config = require('./config/env');
 const mongoose = require('mongoose');
-const scrapeUtilityInt = require('./utilities/scrapeIntNews');
-const articlesCtrl = require('./controllers/ArticlesController');
+const {scrapeIntNews} = require('./helpers/scrapeArticles');
+const {cleanUpOldArticles} = require('./controllers/ArticlesController');
 const api = require('./routes/api');
 
 // ..........................................................................
@@ -42,18 +42,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', api);
 
 //test webscraper and old Articles clean up to make sure it works
-setTimeout(function () {
-  //scrapeUtilityInt.scrapeIntNews();
-  articlesCtrl.cleanUpOldArticles();
-  console.log('scraping');
+setTimeout( async function () {
+  await scrapeIntNews();
+  cleanUpOldArticles();
+  console.log('scraping...');
 }, 900);
-
-//scrapes data every 12 hrs
-//  setInterval(function () {
-//    //scrapeUtilityInt.scrapeIntNews();
-//    articlesCtrl.cleanUpOldArticles();
-//    console.log('scraping');
-// }, 43200000);
 
 // ..........................................................................
 // Port Settings

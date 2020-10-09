@@ -8,21 +8,25 @@ const apiKey = config.apikeys.newsAPI;
 module.exports.scrapeIntNews = async () => {
     for (let i in NEWS_SOURCE) {
         let elem = NEWS_SOURCE[i];
-        let headline = await getNewsHeadline(`${elem.url}${apiKey}`);
-        let articleDetails  = await scrapeArticleDetail(headline.url, elem.html_scraper_class);
-        await saveArticles({
-            title: headline.title,
-            urlTitle: headline.title ? (headline.title).replace(/[\. ,:-]+/g, "-"): '',
-            author: headline.author,
-            subject: headline.description,
-            content: headline.content,
-            source: elem.source,
-            category: elem.category,
-            publishedAt: headline.publishedAt,
-            publishedDate: moment(headline.publishedAt).format("MMM Do YY"),
-            description: articleDetails,
-            urlToImage: headline.UrlToImage,
-            url: headline.url
-        });
+        let headlines = await getNewsHeadline(`${elem.url}${apiKey}`);
+        for (const key in headlines) {
+            let articleDetails  = await scrapeArticleDetail(headlines[key].url, elem.html_scraper_class);
+            await saveArticles({
+                title: headlines[key].title,
+                urlTitle: headlines[key].title ? (headlines[key].title).replace(/[\. ,:-]+/g, "-"): '',
+                author: headlines[key].author,
+                subject: headlines[key].description,
+                content: headlines[key].content,
+                source: elem.source,
+                category: elem.category,
+                publishedAt: headlines[key].publishedAt ? headlines[key].publishedAt:'',
+                publishedDate: moment(headlines[key].publishedAt? headlines[key].publishedAt:'').format(),
+                description: articleDetails,
+                urlToImage: headlines[key].UrlToImage,
+                url: headlines[key].url
+            });
+            
+        }
+       
     }
 }

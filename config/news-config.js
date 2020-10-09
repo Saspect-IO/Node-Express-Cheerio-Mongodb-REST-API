@@ -1,5 +1,5 @@
 const constants = {
-    NEWS_SOURCE = {
+    NEWS_SOURCE: {
         TNW: { 
             category: "trending",
             url:'https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=',

@@ -37,7 +37,7 @@ let ArticlesSchema = new Schema({
 	},
 	publishedAt: {
 		type: String,
-		required: true
+		required: false
 	},
 	publishedDate: {
 		type: Date,

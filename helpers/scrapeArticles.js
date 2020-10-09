@@ -19,8 +19,8 @@ module.exports.scrapeIntNews = async () => {
                 content: headlines[key].content,
                 source: elem.source,
                 category: elem.category,
-                publishedAt: headlines[key].publishedAt ? headlines[key].publishedAt:'',
-                publishedDate: moment(headlines[key].publishedAt? headlines[key].publishedAt:'').format(),
+                publishedAt: headlines[key] ? headlines[key].publishedAt ? headlines[key].publishedAt : '' : '',
+                publishedDate: headlines[key] ? headlines[key].publishedAt ? moment(headlines[key].publishedAt).format() : moment().format(): moment().format(),
                 description: articleDetails,
                 urlToImage: headlines[key].UrlToImage,
                 url: headlines[key].url

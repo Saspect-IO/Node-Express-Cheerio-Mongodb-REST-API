@@ -8,10 +8,30 @@ const moment = require('moment');
 // Article Forms and Previews
 // ..........................................................................
 //
+
+// save aticles new articles
+module.exports.saveArticles = async function(article) {
+
+  if (article!==undefined) {
+    let dbArticle = await Article.find({title: article.title}, {title: 1});
+
+    if (dbArticle && dbArticle.length!==0) {
+      console.log('article exist ' + dbArticle.title);
+    } else {
+      console.log('new article ' + article.title+' '+article.source);
+      let newArticle = new Article(article);
+      await newArticle.save();
+
+    }
+  }
+}
+
 //get articles by category
 module.exports.getArticleByCategory = async (req, res) => {
 
-  let articles = (await Article.find({category: req.params.category})).map((article) => {
+  let articles = await Article.find({category: req.params.category});
+  
+  let articlesFound = articles && articles.length > 0 ? articles.map((article) => {
     return {
       id: article._id,
       source: article.source,
@@ -25,9 +45,8 @@ module.exports.getArticleByCategory = async (req, res) => {
       url: article.url,
       mview: article.mview
     }
-  })
-
-  res.json({articles})
+  }) : [];
+  res.json({articlesFound})
 }
 
 //to update article view
@@ -54,38 +73,38 @@ module.exports.updateArticleById = (req, res) => {
   });
 }
 //remove articles from the database 3days old.
-module.exports.cleanUpOldArticles = async () => {
-  let articles =  await Article.find(
-    {timeStamp:
-      {
-        $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000)))
-      }
-    }
-  )
+// module.exports.cleanUpOldArticles = async () => {
+//   let articles =  await Article.find(
+//     {timeStamp:
+//       {
+//         $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000)))
+//       }
+//     }
+//   )
 
-  // let test = Date((new Date().getTime() + (15 * 24 * 60 * 60 * 1000)));
+//   let test = Date((new Date().getTime() + (15 * 24 * 60 * 60 * 1000)));
 
-  // console.log(test);
+//   console.log(test);
   
 
 
-  // Article.find({}, function (err, Data) {
-  //   if (Data) {
-  //     let dbArticles = Data;
+//   Article.find({}, function (err, Data) {
+//     if (Data) {
+//       let dbArticles = Data;
 
-  //     for (let i in dbArticles) {
-  //       let eachArticle = dbArticles[i];
-  //       let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
-  //       if (relativeTime == '5 days ago') {
-  //         Article.remove({
-  //           "_id": dbArticles[i]._id
-  //         }, (err, data) => {
-  //           if (err) {
-  //             throw err;
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-  // });
-}
+//       for (let i in dbArticles) {
+//         let eachArticle = dbArticles[i];
+//         let relativeTime = moment(eachArticle.timeStamp, "YYYYMMDD").fromNow();
+//         if (relativeTime == '5 days ago') {
+//           Article.remove({
+//             "_id": dbArticles[i]._id
+//           }, (err, data) => {
+//             if (err) {
+//               throw err;
+//             }
+//           });
+//         }
+//       }
+//     }
+//   });
+// }

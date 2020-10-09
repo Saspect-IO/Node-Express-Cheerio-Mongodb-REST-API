@@ -19,6 +19,10 @@ let ArticlesSchema = new Schema({
 		type: String,
 		required: false
 	},
+	content: {
+		type: String,
+		required: false
+	},
 	author: {
 		type: String,
 		required: false

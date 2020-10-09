@@ -7,12 +7,12 @@ const apiKey = config.apikeys.newsAPI;
 
 module.exports.scrapeIntNews = async () => {
     for (let i in NEWS_SOURCE) {
-        let elem = NEWS_SOURCE[i]
-        headline = await getNewsHeadline(`${elem.url}${apiKey}`);
+        let elem = NEWS_SOURCE[i];
+        let headline = await getNewsHeadline(`${elem.url}${apiKey}`);
         let articleDetails  = await scrapeArticleDetail(headline.url, elem.html_scraper_class);
         await saveArticles({
-            title: headlin.title,
-            urlTitle: headlin.title ? (headlin.title).replace(/[\. ,:-]+/g, "-"): '',
+            title: headline.title,
+            urlTitle: headline.title ? (headline.title).replace(/[\. ,:-]+/g, "-"): '',
             author: headline.author,
             subject: headline.description,
             content: headline.content,
@@ -25,6 +25,4 @@ module.exports.scrapeIntNews = async () => {
             url: headline.url
         });
     }
-
-
 }

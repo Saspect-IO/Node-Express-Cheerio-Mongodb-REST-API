@@ -43,9 +43,10 @@ app.use('/', api);
 
 //test webscraper and old Articles clean up to make sure it works
 setTimeout( async function () {
+  console.log('scraping...');
   await scrapeIntNews();
   cleanUpOldArticles();
-  console.log('scraping...');
+  console.log('complete...');
 }, 900);
 
 // ..........................................................................

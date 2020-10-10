@@ -11,11 +11,28 @@ const {cleanUpOldArticles} = require('./controllers/ArticlesController');
 const api = require('./routes/api');
 
 // ..........................................................................
-// Connect to Atlas with mongoose
+// Database Init
 // ..........................................................................
-mongoose.connect( config.db.host, { useNewUrlParser: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+//mongoose options
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  autoIndex: false, // Don't build indexes
+  poolSize: 10, // Maintain up to 10 socket connections
+  bufferMaxEntries: 0,
+}
+//connect to database
+mongoose.connect(config.db.host, mongooseOptions).then(
+  () => console.log("Database Connection established!"),
+  err => console.log(err)
+);
+mongoose.set('useFindAndModify', false);
+// To log errors after initial connection  
+mongoose.connection.on('error', err => {
+  console.log(err);
+  if (err) throw err
+});
+
 
 // ..........................................................................
 // Init App
@@ -29,10 +46,6 @@ const app = express();
 app.use(helmet());
 // CORS Middleware
 app.use(cors());
-
-// view engine setup
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
 
 // BodyParser Middleware
 app.use(bodyParser.json());

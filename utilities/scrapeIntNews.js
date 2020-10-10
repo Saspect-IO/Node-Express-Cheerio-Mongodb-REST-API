@@ -12,7 +12,6 @@ module.exports.scrapeArticleDetail = async (artilceUrl, htmlScraperClass) => {
       let addedSpace = data.find("p").text();
       articleDetails = addedSpace.replace(/(.*?\.){3}/g, '$& \n\n');
     });
-    
     return articleDetails;
   } catch (err) {
     console.log('[Error]:', err.message);

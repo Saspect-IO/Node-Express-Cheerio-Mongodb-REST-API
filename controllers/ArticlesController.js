@@ -1,26 +1,29 @@
-"use strict";
 // ..........................................................................
 // IMPORTS & ALIASES
 // ..........................................................................
 const Article = require('../models/Articles');
 const moment = require('moment');
+
+
 // ..........................................................................
 // Article Forms and Previews
 // ..........................................................................
-//
 
-// save aticles new articles
-module.exports.saveArticles = async function(article) {
+//save new articles
+module.exports.saveArticles = async function (article) {
 
-  if (article!==undefined) {
-    let dbArticle = await Article.find({title: article.title}, {title: 1});
+  if (article !== undefined) {
+    let dbArticle = await Article.find({
+      title: article.title
+    }, {
+      title: 1
+    });
     if (dbArticle && dbArticle.length > 0) {
       console.log('article exist ' + dbArticle[0].title);
     } else {
-      console.log('new article ' + article.title+' '+article.source);
+      console.log('new article ' + article.title + ' ' + article.source);
       let newArticle = new Article(article);
       await newArticle.save();
-
     }
   }
 }
@@ -28,8 +31,10 @@ module.exports.saveArticles = async function(article) {
 //get articles by category
 module.exports.getArticleByCategory = async (req, res) => {
 
-  let articles = await Article.find({category: req.params.category});
-  
+  let articles = await Article.find({
+    category: req.params.category
+  });
+
   let articlesFound = articles && articles.length > 0 ? articles.map((article) => {
     return {
       id: article._id,
@@ -45,10 +50,12 @@ module.exports.getArticleByCategory = async (req, res) => {
       mview: article.mview
     }
   }) : [];
-  res.json({articlesFound})
+  res.json({
+    articlesFound
+  })
 }
 
-//to update article view
+//update articles
 module.exports.updateArticleById = (req, res) => {
   let newData = {
     $set: {
@@ -71,6 +78,7 @@ module.exports.updateArticleById = (req, res) => {
     res.json("Article Updated")
   });
 }
+
 //remove articles from the database 3days old.
 module.exports.cleanUpOldArticles = async () => {
   Article.find({}, function (err, Data) {

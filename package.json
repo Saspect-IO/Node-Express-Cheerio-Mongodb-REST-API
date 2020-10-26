@@ -2,11 +2,11 @@
   "name": "notivize",
   "version": "1.0.0",
   "description": "recreate news api and get news details",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "SET NODE_ENV=dev& nodemon server.js",
-    "prod": "NODE_ENV=production& node server.js"
+    "dev": "SET NODE_ENV=dev& nodemon app.js",
+    "prod": "NODE_ENV=production& node app.js"
   },
   "author": "Sheldon Small",
   "license": "ISC",

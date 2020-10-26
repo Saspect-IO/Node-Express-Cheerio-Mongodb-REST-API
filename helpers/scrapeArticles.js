@@ -1,5 +1,5 @@
 const moment = require('moment');
-const { NEWS_SOURCE } = require('../config/news-config');
+const { NEWS_SOURCE } = require('../config/constants');
 const { getNewsHeadline, scrapeArticleDetail } = require('../utilities/scrapeIntNews');
 const { saveArticles } = require('../controllers/ArticlesController');
 const config = require('../config/env')

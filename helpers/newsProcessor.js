@@ -1,10 +1,10 @@
 const moment = require('moment');
 const { NEWS_SOURCE } = require('../config/constants');
-const { getNewsHeadline, scrapeArticleDetail } = require('../utilities/scrapeIntNews');
+const { getNewsHeadline, scrapeArticleDetail } = require('../utilities/newsUtils');
 const { saveArticles } = require('../controllers/ArticlesController');
 const config = require('../config/env')
 
-module.exports.scrapeIntNews = async () => {
+module.exports.processNewsData = async () => {
     for (let i in NEWS_SOURCE) {
         let elem = NEWS_SOURCE[i];
         let headlines = await getNewsHeadline(`${elem.url}${config.apikeys.newsAPI}`);

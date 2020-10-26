@@ -4,7 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const config = require('./config/env');
 const mongoose = require('mongoose');
-const {scrapeIntNews} = require('./helpers/scrapeArticles');
+const {processNewsData} = require('./helpers/newsProcessor');
 const {cleanUpOldArticles} = require('./controllers/ArticlesController');
 const api = require('./routes/api');
 
@@ -55,7 +55,7 @@ app.use('/', api);
 //test webscraper and old Articles clean up to make sure it works
 setTimeout( async function () {
   console.log('scraping...');
-  await scrapeIntNews();
+  await processNewsData();
   cleanUpOldArticles();
   console.log('complete...');
 }, 900);

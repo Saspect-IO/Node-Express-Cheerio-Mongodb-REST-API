@@ -16,7 +16,7 @@ const dev = {
     }
 };
 
-const prod = {
+const production = {
     app: {
         webserver: {
             port: parseInt(process.env.PROD_APP_PORT) || 8080,
@@ -35,7 +35,7 @@ const env = process.env.NODE_ENV
 
 const config = {
     dev,
-    prod
+    production
 };
 
 module.exports = config[env];

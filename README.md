@@ -1,4 +1,4 @@
-Node, Express, Mongodb, RESTful API Service, with the[cheerio](https://cheerio.js.org/) webscraper, powered by the [newsAPI](https://newsapi.org/) for:
+Node, Express, Mongodb, RESTful API Service, with the [cheerio](https://cheerio.js.org/) webscraper, powered by the [newsAPI](https://newsapi.org/) for:
 1. [NotiVize-Android-Mobile-App](https://github.com/Saspect-IO/NotiVize).
 
 The REST API JSON Demo on heroku returns data by categories, links below:

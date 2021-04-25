@@ -26,7 +26,7 @@ open cli in project folder and run:  npm run dev
 
 
 ## Demo Android App
-Demo Native Android App Powered by the News API.
+Native android app demo powered by the News API.
 
 
 Download app from the play store, [NotiVize](https://play.google.com/store/apps/details?id=com.saspect.notivise). 

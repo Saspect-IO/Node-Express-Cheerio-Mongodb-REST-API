@@ -58,7 +58,7 @@ setTimeout( async function () {
   await processNewsData();
   cleanUpOldArticles();
   console.log('complete...');
-}, 900);
+}, 1000);
 
 // ..........................................................................
 // Port Settings

@@ -1,6 +1,6 @@
 Node, Express, Mongodb, RESTful API Service, with the [cheerio](https://cheerio.js.org/) webscraper, powered by the [newsAPI](https://newsapi.org/) for:
 
-## API Endpoint
+## API Endpoints
 The REST API JSON Demo on heroku returns data by categories, links below:
 1. [tech](https://notivize.herokuapp.com/api/articles/tech)
 2. [local](https://notivize.herokuapp.com/api/articles/local)
@@ -25,7 +25,7 @@ open cli in project folder and run:  npm run dev
 2) Database Storage: Use Mongodb Atlas for cloud or mongod for local server.
 
 
-# Demo Android App
+## Demo Android App
 Demo Native Android App Powered by the News API.
 
 

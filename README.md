@@ -32,12 +32,12 @@ Demo Native Android App Powered by the News API.
 Download app from the play store, [NotiVize](https://play.google.com/store/apps/details?id=com.saspect.notivise). 
 
 Trending View for Smart Phone Standar Screen Size
-![Alt text](https://github.com/Saspect-IO/NotiVize/blob/NotiVize_Screenshots/Screenshot_2017-06-16-23-23-40.png?raw=true "Optional Title")
+![Alt text](https://play-lh.googleusercontent.com/yFyJk0RBHwSjrjXaw2Pl8c0OtEQH766DeUS8Eg5oobFGhg6d73RL4Dc0ByO9aauqSvk=w1920-h941-rw "Optional Title")
 
 
-Category Section View for tablets
-![Alt text](https://github.com/Saspect-IO/NotiVize/blob/NotiVize_Screenshots/Screenshot_20170616-231654.png?raw=true "Optional Title")
+Category Section
+![Alt text](https://play-lh.googleusercontent.com/8Fu7L9yNsRTiBpqIrjIyrTcPpPi6gLchA5Os8cFruAN7EN8r7jd7CC5V-SbE_-x03g=w1920-h941-rw "Optional Title")
 
 
 Favorite/BookmarkView for Offline Reading
-![Alt text](https://github.com/Saspect-IO/NotiVize/blob/NotiVize_Screenshots/Screenshot_2017-06-16-23-24-12.png?raw=true "Optional Title")
+![Alt text](https://play-lh.googleusercontent.com/NTCJm_ICyUcNo0B3l_tseP8UOLYLUOgfg7_FjrTjSyUHeVOddN6ndpjp3pjhkGczrak=w1920-h941-rw "Optional Title")
